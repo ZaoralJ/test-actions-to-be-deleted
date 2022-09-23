@@ -12,16 +12,35 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-  build-arburg:
-    name: 'Build Arburg'
+  paths-filter:
     runs-on: ubuntu-latest
-    needs: [test]
+    outputs:
+      arburg: ${{ steps.filter.outputs.workflows }}
     steps:
       - uses: actions/checkout@v3
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            arburg:
+              - 'shared/**'
+              - 'Arburg/**'
+            cc300:
+              - 'shared/**'
+              - 'CC300/**'
+  build-arburg:
+    runs-on: ubuntu-latest
+    needs: paths-filter
+    if: needs.paths-filter.outputs.arburg == 'true'
+    steps:
+      - name: Build docker image
+        run: echo "Building arburg docker image"
 
   build-cc300:
-    name: 'Build CC300'
     runs-on: ubuntu-latest
-    needs: [ test ]
+    needs: paths-filter
+    if: needs.paths-filter.outputs.cc300 == 'true'
     steps:
-      - uses: actions/checkout@v3
+      - name: Build docker image
+        run:
+          echo "Building CC300 docker image"
