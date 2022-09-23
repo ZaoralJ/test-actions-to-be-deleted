@@ -14,8 +14,10 @@ jobs:
 
   paths-filter:
     runs-on: ubuntu-latest
+    needs: test
     outputs:
-      arburg: ${{ steps.filter.outputs.workflows }}
+      arburg: ${{ steps.filter.outputs.arburg }}
+      cc300: ${{ steps.filter.outputs.cc300 }}
     steps:
       - uses: actions/checkout@v3
       - uses: dorny/paths-filter@v2
