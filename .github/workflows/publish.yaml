@@ -25,10 +25,10 @@ jobs:
         with:
           filters: |
             arburg:
-              - 'shared/**'
+              - 'Shared/**'
               - 'Arburg/**'
             cc300:
-              - 'shared/**'
+              - 'Shared/**'
               - 'CC300/**'
   build-arburg:
     runs-on: ubuntu-latest
