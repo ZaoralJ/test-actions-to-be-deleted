@@ -19,6 +19,7 @@ jobs:
       arburg: ${{ steps.filter.outputs.arburg }}
       cc300: ${{ steps.filter.outputs.cc300 }}
     steps:
+      - uses: actions/checkout@v3
       - uses: dorny/paths-filter@v2
         id: filter
         with:
@@ -29,19 +30,15 @@ jobs:
             cc300:
               - 'Shared/**'
               - 'CC300/**'
-  build-arburg:
+  build-docker:
     runs-on: ubuntu-latest
     needs: paths-filter
     if: needs.paths-filter.outputs.arburg == 'true'
     steps:
-      - name: Build docker image
+      - name: Build arburg docker image
+        if: needs.paths-filter.outputs.arburg == 'true'
         run: echo "Building arburg docker image"
+      - name: Build cc300 docker image
+        if: needs.paths-filter.outputs.cc300 == 'true'
+        run: echo "Building cc300 docker image"
 
-  build-cc300:
-    runs-on: ubuntu-latest
-    needs: paths-filter
-    if: needs.paths-filter.outputs.cc300 == 'true'
-    steps:
-      - name: Build docker image
-        run:
-          echo "Building CC300 docker image"
