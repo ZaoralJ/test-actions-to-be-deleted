@@ -19,7 +19,6 @@ jobs:
       arburg: ${{ steps.filter.outputs.arburg }}
       cc300: ${{ steps.filter.outputs.cc300 }}
     steps:
-      - uses: actions/checkout@v3
       - uses: dorny/paths-filter@v2
         id: filter
         with:
